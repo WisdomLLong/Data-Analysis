@@ -20,7 +20,7 @@ counts = get_count(time_zones)
 ###### 对字典进行排序
 # 转化为list再排序
 def top_counts(countDict, n = 10):
-  countList = [(value, key) for key,value in countDict.item()]
+  countList = [(value, key) for key,value in countDict.items()]
   countList.sort()
   return countList[-n:]
 top_counts(counts)
@@ -32,8 +32,8 @@ counts.most_common(10)
 
 ###### 利用pandas和numpy进行分析
 from pandas import DataFrame, Series
-import pandas as; import numpy as np
-frame = DataFrame(records)    # record 是一个List，其中每一个元素是一个字典
+import pandas as pd; import numpy as np
+frame = DataFrame(records)    # records 是一个List，其中每一个元素是一个字典
 frame['tz'][:10]    # 直接查看tz列的前10个数据，frame['tz']是一个Series对象
 tz_counts = frame['tz'].value_counts()    # Series对象有一个value_counts方法用于统计出现的次数
 
