@@ -37,11 +37,19 @@ frame = DataFrame(records)    # records 是一个List，其中每一个元素是
 frame['tz'][:10]    # 直接查看tz列的前10个数据，frame['tz']是一个Series对象
 tz_counts = frame['tz'].value_counts()    # Series对象有一个value_counts方法用于统计出现的次数
 
-clean_tz = frame['tz'].fillna('Missing')
-clean_tz[clean_tz == ''] = 'Unknown'
+clean_tz = frame['tz'].fillna('Missing')    # 填补的是 Nan
+clean_tz[clean_tz == ''] = 'Unknown'    # 填补的是 空
 tz_counts = clean_tz.value_counts()
 tz_counts[:10].plot(kind='barh', rot=0)
 
+# 把字符串的第一节分离出来
+results = Series([x.split()[0] for x in frame.a.dropna()])
 
-
-  
+# 给出用户是否为windows系统的信息
+cframe = frame[frame.a.notnull()]   # 将agent缺失项移除
+operating_system = np.where(cframe['a'].str.contains('Windows'),'Windows','Not Windows') 
+# 这里产生是一个numpy.ndarray类型的数组
+by_tz_os = cframe.groupby(['tz', operating_system])
+# groupby先对cframe的'tz'进行分组，再按照operating_system中的key进行分组
+agg_counts = by_tz_os.size().unstack().fillna(0)
+# size()对index进行计数，unstack()将二维的index变为一维index和一维的column，
