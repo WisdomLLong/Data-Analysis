@@ -52,6 +52,17 @@ operating_system = np.where(cframe['a'].str.contains('Windows'),'Windows','Not W
 by_tz_os = cframe.groupby(['tz', operating_system])
 # groupby先对cframe的'tz'进行分组，再按照operating_system中的key进行分组
 agg_counts = by_tz_os.size().unstack().fillna(0)
-# size()对index进行计数，unstack()将二维的index变为一维index和一维的column，
+# size()对index进行计数，unstack()将二维的index变为一维index和一维的column，也就是重塑
+
+## 得到含有Windows字符最多的时区，也就是地点
+indexer = agg_counts.sum(1).argsort()
+# 横向对value相加，再对数值进行升序排序，返回一个Series对象，index不变，values是排序后的位置index
+count_subset = agg_counts.take(indexer)[-10:]
+
+# 画出条形图
+normed_subset = count_subset.div(count_subset.sum(1), axis=0)
+# 除横向和，相当于归一化
+normed_subset.plot(kind='barh', stacked=True)
+# stacked堆积条形图
 
 
