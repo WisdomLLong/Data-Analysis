@@ -53,3 +53,5 @@ by_tz_os = cframe.groupby(['tz', operating_system])
 # groupby先对cframe的'tz'进行分组，再按照operating_system中的key进行分组
 agg_counts = by_tz_os.size().unstack().fillna(0)
 # size()对index进行计数，unstack()将二维的index变为一维index和一维的column，
+
+
