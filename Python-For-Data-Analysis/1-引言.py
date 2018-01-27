@@ -1,10 +1,13 @@
+####################################################################
+# 来自bit.ly的1.usa.gov数据
+####################################################################
+
 #@@ json 数据导入
 
 import json
 path = 'E:/Job/MLanguage/Python/Workplace_DataAnalysis/pydata-book/datasets/bitly_usagov/example.txt'
 records = [json.loads(line) for line in open(path)]
 time_zones = [rec['tz'] for rec in records if 'tz' in rec]
-
 
 #@@ defaultdict （对dict的功能扩展，当key不存在时，放回一个默认值，而不是KeyError）
 
@@ -64,5 +67,4 @@ normed_subset = count_subset.div(count_subset.sum(1), axis=0)
 # 除横向和，相当于归一化
 normed_subset.plot(kind='barh', stacked=True)
 # stacked堆积条形图
-
 
